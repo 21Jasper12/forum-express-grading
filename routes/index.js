@@ -1,8 +1,9 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const restController = require("../controllers/restaurant-controller"); // 引入restaurant路由
 
-module.exports = router
+router.get("/restaurants", restController.getRestaurants);
+router.use("/", (req, res) => res.redirect("/restaurants"));
+
+module.exports = router;

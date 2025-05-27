@@ -10,3 +10,5 @@ rules:
   arrow-parens:
     - warn
     - as-needed
+semi:
+  - off

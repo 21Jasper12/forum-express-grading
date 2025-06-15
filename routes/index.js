@@ -4,6 +4,7 @@ const router = express.Router();
 const admin = require("./modules/admin"); // 引入【後台】路由
 const userController = require("../controllers/user-controller"); //引入userControl
 const restController = require("../controllers/restaurant-controller"); // 引入restaurant路由
+const { authenticated } = require("../middleware/auth");
 const { generalErrorHandler } = require("../middleware/error-handler"); // 引入error-handler
 
 /** 引入passport設定 */
@@ -29,7 +30,7 @@ router.post(
 router.get("/logout", userController.logout);
 
 /** restControl */
-router.get("/restaurants", restController.getRestaurants);
+router.get("/restaurants", authenticated, restController.getRestaurants);
 router.use("/", (req, res) => res.redirect("/restaurants"));
 
 /** error判別 */

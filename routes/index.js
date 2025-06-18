@@ -4,13 +4,13 @@ const router = express.Router();
 const admin = require("./modules/admin"); // 引入【後台】路由
 const userController = require("../controllers/user-controller"); //引入userControl
 const restController = require("../controllers/restaurant-controller"); // 引入restaurant路由
-const { authenticated } = require("../middleware/auth");
+const { authenticated, authenticatedAdmin } = require("../middleware/auth");
 const { generalErrorHandler } = require("../middleware/error-handler"); // 引入error-handler
 
 /** 引入passport設定 */
 const passport = require("./../config/passport");
 
-router.use("/admin", admin); //後台
+router.use("/admin", authenticatedAdmin, admin); //後台
 
 /** userControl - 註冊 */
 router.get("/signup", userController.signUpPage);

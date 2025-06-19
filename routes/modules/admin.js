@@ -11,6 +11,8 @@ router.get("/restaurants/:id/edit", adminController.editRestaurant);
 router.get("/restaurants/:id", adminController.getRestaurant);
 /** 修改單一餐廳 - put */
 router.put("/restaurants/:id", adminController.putRestaurant);
+/** 刪除單一餐廳 */
+router.delete("/restaurants/:id", adminController.deleteRestaurant);
 /** 所有餐廳路由 - 頁面 */
 router.get("/restaurants", adminController.getRestaurants);
 /** post - 新增餐廳 */

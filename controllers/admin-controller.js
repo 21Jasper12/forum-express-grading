@@ -83,6 +83,21 @@ const adminController = {
       })
       .catch((err) => next(err));
   },
+
+  /** delete - 刪除單一餐廳 */
+  deleteRestaurant: (req, res, next) => {
+    return Restaurant.findByPk(req.params.id)
+      .then((restaurant) => {
+        if (!restaurant) throw new Error("Restaurant didn't exist!");
+
+        return restaurant.destroy();
+      })
+      .then(() => {
+        req.flash("success_messages", "restaurant was successfully to delete");
+        res.redirect("/admin/restaurants");
+      })
+      .catch((err) => next(err));
+  },
 };
 
 module.exports = adminController;

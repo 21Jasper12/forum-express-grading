@@ -1,3 +1,5 @@
+const path = require("path"); // 引入 path 套件
+
 const express = require("express");
 const handlebars = require("express-handlebars");
 const flash = require("connect-flash");
@@ -31,6 +33,8 @@ app.use(flash()); // 掛載套件
 
 /** 載入methodOverride */
 app.use(methodOverride("_method"));
+/** 讓外部傳入的 request 可以取得 /upload 這個路徑 */
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 /** 將connect-flash設定進res的locals */
 app.use((req, res, next) => {

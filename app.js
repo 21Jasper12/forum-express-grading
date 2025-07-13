@@ -9,6 +9,10 @@ const passport = require("./config/passport");
 const { getUser } = require("./helpers/auth-helpers");
 const handlebarsHelpers = require("./helpers/handlebars-helpers"); // 引入 handlebars-helpers
 
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const routes = require("./routes");
 
 const app = express();

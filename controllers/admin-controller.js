@@ -1,5 +1,5 @@
 const { Restaurant } = require("../models"); // 新增這裡
-const { localFileHandler } = require("../helpers/file-helpers");
+const { localFileHandler, r2FileHandler } = require("../helpers/file-helpers");
 
 const adminController = {
   getRestaurants: (req, res, next) => {
@@ -24,7 +24,13 @@ const adminController = {
     if (!name) throw new Error("Restaurant name is required!"); // name 是必填，若發先是空值就會終止程式碼，並在畫面顯示錯誤提示
     const { file } = req;
 
-    localFileHandler(file) // 把取出的檔案傳給 file-helper 處理後
+    const isProd = process.env.NODE_ENV === "production";
+    /** localFileHandler => 【develop】上傳在local端資料夾 */
+    /** r2FileHandler => 【production】上傳在cloudfare資料夾 */
+    const handler = isProd ? r2FileHandler : localFileHandler;
+
+    // 把取出的檔案傳給 file-helper 處理後
+    handler(file)
       .then((filePath) => {
         return Restaurant.create({
           // 再 create 這筆餐廳資料
@@ -75,9 +81,14 @@ const adminController = {
 
     const { file } = req;
 
+    const isProd = process.env.NODE_ENV === "production";
+    /** localFileHandler => 【develop】上傳在local端資料夾 */
+    /** r2FileHandler => 【production】上傳在cloudfare資料夾 */
+    const handler = isProd ? r2FileHandler : localFileHandler;
+
     Promise.all([
       Restaurant.findByPk(req.params.id), // 去資料庫查有沒有這間餐廳
-      localFileHandler(file), // 把檔案傳到 file-helper 處理
+      handler(file), // 把取出的檔案傳給 file-helper 處理後
     ])
       .then(([restaurant, filePath]) => {
         // 以上兩樣事都做完以後
